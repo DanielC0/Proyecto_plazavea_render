@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleados</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            background-color: #f8f9fa;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            /* Oculto por defecto */
+            transition: all 0.3s ease-in-out;
+            padding-top: 20px;
+            border-right: 3px solid #ddd;
+            z-index: 999;
+        }
+
+        .sidebar.show {
+            left: 0;
+            /* Muestra el menú */
+        }
+
+        .content {
+            margin-left: 0px;
+            padding: 20px;
+            flex-grow: 1;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        .menu-btn {
+            font-size: 24px;
+            cursor: pointer;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            z-index: 1050;
+        }
+
+        .content h1 {
+            margin-left: 50px;
+        }
+
+        @media screen and (max-width: 600px) {
+
+            .content h1 {
+                margin-left: 50px;
+                font-size: 1.4rem;
+                padding-top: 5px;
+                margin-bottom: 15px;
+            }
+
+            
+            .menu-btn {
+                top: 10px;
+                left: 10px;
+                font-size: 20px;
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            th {
+                display: none;
+            }
+
+            tr {
+                margin-bottom: 15px;
+            }
+
+            td {
+                text-align: left;
+                padding-left: 50%;
+                position: relative;
+            }
+
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                font-weight: bold;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="confirmarEliminarModal" tabindex="-1" role="dialog" aria-labelledby="confirmarEliminarModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="confirmarEliminarModalLabel"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro que desea eliminar este empleado? Esta acción no se puede deshacer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cancelar</button>
+                    <a id="btnEliminarConfirmado" href="#" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i>Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón para alternar el menú -->
+    <button class="menu-btn" id="toggleMenu">☰</button>
+
+    <!-- Menú lateral -->
+    <div class="sidebar" id="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link active" th:href="@{/inicio}">Inicio</a>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Productos
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" th:href="@{/producto/nuevoProducto}">Agregar Producto</a>
+                    <a class="dropdown-item" th:href="@{/producto/listarPorEmpleado}">Listar por Empleado</a>
+                    <a class="dropdown-item" th:href="@{/producto/listarProductos}">Lista de Productos</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/producto/exportarExcel">Exportar a Excel</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Proveedores
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" th:href="@{/proveedor/nuevoProveedor}">Agregar Proveedor</a>
+                    <a class="dropdown-item" th:href="@{/proveedor/listarProveedores}">Listar Proveedores</a>
+                    <div class="dropdown-divider"></div>
+                    
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Empleados
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" th:href="@{/empleado/nuevoEmpleado}">Agregar Empleados</a>
+                    <a class="dropdown-item" th:href="@{/empleado/listarEmpleados}">Lista de Empleados</a>
+                    <div class="dropdown-divider"></div>
+                    
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Pedidos
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" th:href="@{/pedido/nuevoPedido}">Agregar Pedidos</a>
+                    <a class="dropdown-item" th:href="@{/pedido/listarPedidos}">Lista de Pedidos</a>
+                    <div class="dropdown-divider"></div>
+                    
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="content" id="content">
+        <h1>Listado de Empleados</h1>
+        <br>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>NOMBRE</th>
+                    <th>APELLIDO</th>
+                    <th>EMAIL</th>
+                    <th>ROL</th>
+                    <th>ESTADO</th>
+                    <th>FECHA</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="empleado: ${listaEmpleados}">
+                    <td th:text="${empleado.getNombre()}"></td>
+                    <td th:text="${empleado.getApellido()}"></td>
+                    <td th:text="${empleado.getEmail()}"></td>
+                    <td>
+                        <span th:if="${empleado.getRol()} == 'ADMINISTRADOR'" class="badge badge-primary">Administrador</span>
+                        <span th:if="${empleado.getRol()} == 'ALMACEN'" class="badge badge-secondary">Almacén</span>
+                    </td>
+                    <td>
+                        <span th:if="${empleado.isEnabled()}" class="badge badge-success">Activo</span>
+                        <span th:if="${!empleado.isEnabled()}" class="badge badge-danger">Inactivo</span>
+                    </td>
+                    <td th:text="${#dates.format(empleado.getFecha(), 'dd/MM/yyyy')}"></td>
+                    <td> 
+                        <a th:href="@{/empleado/actualizarEmpleado/{id}(id=${empleado.id})}"
+                            class="btn btn-primary btn-sm">
+                            <i class="fas fa-edit"></i> Actualizar
+                        </a>
+                        <button class="btn btn-danger btn-sm" 
+                                data-toggle="modal" 
+                                data-target="#confirmarEliminarModal"
+                                th:data-url="@{'/empleado/eliminarEmpleado/' + ${empleado.id}}">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // Configuración del modal de confirmación
+        $(document).ready(function(){
+            $('#confirmarEliminarModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Botón que activó el modal
+                var url = button.data('url'); // Extrae la URL del atributo data-url
+                $('#btnEliminarConfirmado').attr('href', url); // Asigna la URL al botón de eliminar
+            });
+        });
+
+        document.getElementById('toggleMenu').addEventListener('click', function () {
+            let sidebar = document.getElementById('sidebar');
+            let content = document.getElementById('content');
+            let menuButton = document.getElementById('toggleMenu');
+
+            sidebar.classList.toggle('show');
+
+            if (sidebar.classList.contains('show')) {
+                content.style.marginLeft = '250px';
+                menuButton.style.left = '265px'; // Ajusta la posición del botón
+            } else {
+                content.style.marginLeft = '0';
+                menuButton.style.left = '15px'; // Restaura la posición original
+            }
+        });
+    </script>
+
+</body>
+</html>

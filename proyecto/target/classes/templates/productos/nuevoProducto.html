@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Producto</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .card-form {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .form-header {
+            background-color: #17a2b8;
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        .form-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .btn-action {
+            min-width: 120px;
+            margin: 5px;
+        }
+        @media (max-width: 768px) {
+            .btn-action {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="card card-form">
+                    <div class="card-header form-header">
+                        <h1 class="h4 mb-0"><i class="fas fa-box-open mr-2"></i>ADMINISTRACIÓN DE PRODUCTOS</h1>
+                    </div>
+                    
+                    <div class="card-body">
+                        <h2 class="h5 text-secondary mb-4"><i class="fas fa-plus-circle mr-2"></i>Nuevo Producto</h2>
+                        
+                        <form action="#" th:action="@{/producto/guardarProducto}" th:object="${producto}" method="post">
+                            <!-- Sección de Información Básica -->
+                            <div class="form-section">
+                                <h3 class="h6 text-primary mb-3"><i class="fas fa-info-circle mr-2"></i>Información Básica</h3>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="nombre"><i class="fas fa-tag mr-1"></i>Nombre de Producto</label>
+                                        <input type="text" th:field="*{nombre}" class="form-control" placeholder="Ej: Leche Deslactosada" required>
+                                    </div>
+                                    <div class="form-group col-md-3 col-sm-6">
+                                        <label for="precio"><i class="fas fa-dollar-sign mr-1"></i>Precio (S/)</label>
+                                        <input type="text" th:field="*{precio}" class="form-control" placeholder="Ej: 5.90" required>
+                                    </div>
+                                    <div class="form-group col-md-3 col-sm-6">
+                                        <label for="cantidad"><i class="fas fa-cubes mr-1"></i>Cantidad</label>
+                                        <input type="text" th:field="*{cantidad}" class="form-control" placeholder="Ej: 25" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="categoria"><i class="fas fa-list-alt mr-1"></i>Categoría</label>
+                                        <select th:field="*{categoria}" class="form-control" required>
+                                            <option value="" disabled selected>Selecciona una categoría</option>
+                                            <option value="Lacteos">Lácteos</option>
+                                            <option value="Perecibles">Perecibles</option>
+                                            <option value="Carnes">Carnes</option>
+                                            <option value="Mariscos">Mariscos</option>
+                                            <option value="Verduras">Verduras</option>
+                                            <option value="Limpieza">Limpieza</option>
+                                            <option value="Abarrotes">Abarrotes</option>
+                                            <option value="Bebidas">Bebidas</option>
+                                            <option value="Muebleria">Muebleria</option>
+                                            <option value="Tecnologia">Tecnologia</option>
+                                            <option value="Ceramicas">Ceramicas</option>
+                                            <option value="Cuidado Personal">Cuidado Personal</option>
+                                            <option value="Herramientas">Herramientas</option>
+                                            <option value="Herramientas Electricas">Herramientas Electricas</option>
+                                            <option value="Productos Marinos">Productos Marinos</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sección de Fechas -->
+                            <div class="form-section">
+                                <h3 class="h6 text-primary mb-3"><i class="far fa-calendar-alt mr-2"></i>Fechas</h3>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="fechaentrada"><i class="fas fa-calendar-plus mr-1"></i>Fecha de Entrada</label>
+                                        <input type="date" th:field="*{fechaentrada}" class="form-control" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="fechavencimiento"><i class="fas fa-calendar-times mr-1"></i>Fecha de Vencimiento</label>
+                                        <input type="date" th:field="*{fechavencimiento}" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sección de Relaciones -->
+                            <div class="form-section">
+                                <h3 class="h6 text-primary mb-3"><i class="fas fa-link mr-2"></i>Relaciones</h3>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="empleado"><i class="fas fa-user-tie mr-1"></i>Empleado Responsable</label>
+                                        <select th:field="*{empleado}" class="form-control" required>
+                                            <option value="" disabled selected>Seleccione un Empleado</option>
+                                            <option th:each="empleado : ${listaEmpleados}" 
+                                                    th:value="${empleado.id}" 
+                                                    th:text="${empleado.nombre}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="proveedor"><i class="fas fa-truck mr-1"></i>Proveedor</label>
+                                        <select th:field="*{proveedor}" class="form-control" required>
+                                            <option value="" disabled selected>Seleccione un Proveedor</option>
+                                            <option th:each="proveedor : ${listaProveedores}" 
+                                                    th:value="${proveedor.id}" 
+                                                    th:text="${proveedor.nombre} + ' - ' + ${proveedor.categoriaProducto}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Botones de Acción -->
+                            <div class="form-row justify-content-between mt-4">
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-outline-secondary btn-action" onclick="window.location.href='/producto/listarProductos'">
+                                        <i class="fas fa-arrow-left mr-2"></i>Regresar
+                                    </button>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-info btn-action">
+                                        <i class="fas fa-save mr-2"></i>Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+        crossorigin="anonymous"></script>
+    <script>
+        // Validación básica de fechas
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fechaEntrada = document.querySelector('*[name="fechaentrada"]');
+            const fechaVencimiento = document.querySelector('*[name="fechavencimiento"]');
+            
+            if(fechaEntrada.value && fechaVencimiento.value) {
+                if(new Date(fechaVencimiento.value) <= new Date(fechaEntrada.value)) {
+                    e.preventDefault();
+                    alert('La fecha de vencimiento debe ser posterior a la fecha de entrada');
+                    fechaVencimiento.focus();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

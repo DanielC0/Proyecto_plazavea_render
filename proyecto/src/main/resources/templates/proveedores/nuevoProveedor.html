@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Proveedor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .card-form {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: none;
+        }
+        .form-header {
+            background-color: #28a745;
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        .form-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .btn-action {
+            min-width: 120px;
+            margin: 5px;
+        }
+        @media (max-width: 768px) {
+            .btn-action {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .form-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 col-xl-6">
+                <div class="card card-form">
+                    <div class="card-header form-header">
+                        <h1 class="h4 mb-0"><i class="fas fa-truck-loading mr-2"></i>ADMINISTRACIÓN DE PROVEEDORES</h1>
+                    </div>
+                    
+                    <div class="card-body">
+                        <h2 class="h5 text-secondary mb-4"><i class="fas fa-plus-circle mr-2"></i>Nuevo Proveedor</h2>
+                        
+                        <form action="#" th:action="@{/proveedor/guardarProveedor}" th:object="${proveedor}" method="post">
+                            <!-- Sección de Información Básica -->
+                            <div class="form-section">
+                                <h3 class="h6 text-primary mb-3"><i class="fas fa-info-circle mr-2"></i>Datos del Proveedor</h3>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="nombre"><i class="fas fa-signature mr-1"></i>Nombre</label>
+                                        <input type="text" th:field="*{nombre}" class="form-control" placeholder="Ej: Distribuidora Alimentos SAC" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="telefono"><i class="fas fa-phone-alt mr-1"></i>Teléfono</label>
+                                        <input type="tel" th:field="*{telefono}" class="form-control" placeholder="Ej: 987654321" pattern="[0-9]{9}" required>
+                                        <small class="form-text text-muted">Formato: 9 dígitos</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="categoriaProducto"><i class="fas fa-tags mr-1"></i>Categoría de Productos</label>
+                                        <select th:field="*{categoriaProducto}" class="form-control" required>
+                                            <option value="" disabled selected>Selecciona una categoría</option>
+                                            <option value="Lacteos">Lácteos</option>
+                                            <option value="Perecibles">Perecibles</option>
+                                            <option value="Carnes">Carnes</option>
+                                            <option value="Mariscos">Mariscos</option>
+                                            <option value="Verduras">Verduras</option>
+                                            <option value="Limpieza">Limpieza</option>
+                                            <option value="Abarrotes">Abarrotes</option>
+                                            <option value="Bebidas">Bebidas</option>
+                                            <option value="Muebleria">Muebleria</option>
+                                            <option value="Tecnologia">Tecnologia</option>
+                                            <option value="Ceramicas">Ceramicas</option>
+                                            <option value="Cuidado Personal">Cuidado Personal</option>
+                                            <option value="Herramientas">Herramientas</option>
+                                            <option value="Herramientas Electricas">Herramientas Electricas</option>
+                                            <option value="Productos Marinos">Productos Marinos</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="fecha"><i class="far fa-calendar-alt mr-1"></i>Fecha de Registro</label>
+                                        <input type="date" th:field="*{fecha}" class="form-control" th:max="${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Botones de Acción -->
+                            <div class="form-row justify-content-between mt-4">
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-outline-secondary btn-action" onclick="window.location.href='/proveedor/listarProveedores'">
+                                        <i class="fas fa-arrow-left mr-2"></i>Regresar
+                                    </button>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-success btn-action">
+                                        <i class="fas fa-save mr-2"></i>Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+        crossorigin="anonymous"></script>
+    <script>
+        // Validación de teléfono
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const telefono = document.querySelector('*[name="telefono"]');
+            if(!/^[0-9]{9}$/.test(telefono.value)) {
+                e.preventDefault();
+                alert('El teléfono debe contener exactamente 9 dígitos');
+                telefono.focus();
+            }
+            
+            const fecha = document.querySelector('*[name="fecha"]');
+            if(new Date(fecha.value) > new Date()) {
+                e.preventDefault();
+                alert('La fecha no puede ser futura');
+                fecha.focus();
+            }
+        });
+    </script>
+</body>
+</html>

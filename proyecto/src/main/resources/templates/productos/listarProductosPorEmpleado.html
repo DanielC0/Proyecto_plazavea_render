@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seleccionar Empleado</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Seleccionar Empleado</h2>
+        <form th:action="@{/producto/empleado}" method="get">
+            <div class="form-group">
+                <label for="empleadoSelect">Empleados</label>
+                <select id="empleadoSelect" name="empleadoId" class="form-control" required>
+                    <option value="" disabled selected>Seleccione un empleado</option>
+                    <option th:each="empleado : ${empleados}" 
+                            th:value="${empleado.id}" 
+                            th:text="${empleado.nombre} + ' ' + ${empleado.apellido}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Ver Productos</button>
+        </form>
+    </div>
+</body>
+</html>
